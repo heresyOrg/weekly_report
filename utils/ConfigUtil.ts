@@ -1,5 +1,4 @@
-import config from '../config/default';
-
 export function loadConfig() {
+  const config = require('../config/default');
   return config
 }
