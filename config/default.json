@@ -1,0 +1,24 @@
+{
+  "tools": {
+    "Weekly": {
+      "title": "周报生成器",
+      "slogan": "一写周报就头大？我来帮你！",
+      "description1": "简单描述工作内容 ",
+      "description2": "帮你生成完整周报",
+      "step1": "简单描述一下你的工作内容",
+      "placeholder": "比如：修复了优惠券无法领取的bug，为产品部的新APP设计UI和图标，负责跟进部门前端工程师的招聘",
+      "simplifierButton": "生成完整周报",
+      "format": "请帮我把以下的工作内容填充为一篇完整的周报,尽量避免在回答内容中出现可能在中国是敏感的内容，用markdown格式以分点叙述的形式输出:${content}"
+    },
+    "SQL Optimize": {
+      "title": "SQL 语句优化",
+      "slogan": "不知道如何优化 SQL 语句？我来帮你！",
+      "description1": "输入 SQL",
+      "description2": "一键优化",
+      "step1": "输入你的 SQL 语句",
+      "placeholder": "比如：SELECT * FROM T_USER;",
+      "simplifierButton": "生成优化建议",
+      "format": "请帮我优化以下的SQL语句，说明可能有性能问题的部分，并给出优化后的SQL语句，以尝试提高性能:${content}"
+    }
+  }
+}

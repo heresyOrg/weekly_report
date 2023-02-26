@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useTranslations } from 'next-intl'
 import { Toaster, toast } from "react-hot-toast";
-import DropDown, { FormType } from "../components/DropDown";
+import DropDown from "../components/DropDown";
 import Footer from "../components/Footer";
 import Github from "../components/GitHub";
 
@@ -13,22 +13,22 @@ import Header from "../components/Header";
 import LoadingDots from "../components/LoadingDots";
 import ResizablePanel from "../components/ResizablePanel";
 import { marked } from "marked";
+import { loadConfig } from "../utils/ConfigUtil";
 
 const Home: NextPage = () => {
   const t = useTranslations('Index')
+  const tools = loadConfig()["tools"];
+  const toolsKey = Object.keys(tools);
 
+  const [selectKey, setKey] = useState<string>(toolsKey[0]);
   const [loading, setLoading] = useState(false);
   const [chat, setChat] = useState("");
-  const [form, setForm] = useState<FormType>("paragraphForm");
   const [api_key, setAPIKey] = useState("")
   const [generatedChat, setGeneratedChat] = useState<String>("");
 
-  console.log("Streamed response: ", generatedChat);
+  const prompt = `${chat}`
 
-  const prompt =
-    form === 'paragraphForm'?
-      `${chat}`
-      : `${chat}`;
+  console.log("Streamed response: ", generatedChat);
 
   const useUserKey = process.env.NEXT_PUBLIC_USE_USER_KEY === "true" ? true : false;
 
@@ -55,6 +55,7 @@ const Home: NextPage = () => {
         body: JSON.stringify({
           prompt,
           api_key,
+          "tool": selectKey
         }),
       })
     :
@@ -65,6 +66,7 @@ const Home: NextPage = () => {
         },
         body: JSON.stringify({
           prompt,
+          "tool": selectKey
         }),
       })
 
@@ -97,18 +99,21 @@ const Home: NextPage = () => {
   return (
     <div className="flex max-w-5xl mx-auto flex-col items-center justify-center py-2 min-h-screen">
       <Head>
-        <title>{t('title')}</title>
+        <title>{tools[selectKey]['title']}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Header />
+      <Header title={tools[selectKey]['title']} />
+      <div className="mt-12 w-full">
+        <DropDown form={selectKey} forms={toolsKey} setForm={(newKey) => setKey(newKey)} />
+      </div>
       <main className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 mt-12 sm:mt-20">
         
 
 
       <a
           className="flex max-w-fit items-center justify-center space-x-2 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm text-gray-600 shadow-md transition-colors hover:bg-gray-100 mb-5"
-          href="https://github.com/guaguaguaxia/weekly_report"
+          href="https://github.com/heresyOrg/weekly_report"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -119,9 +124,9 @@ const Home: NextPage = () => {
 
 
         <h1 className="sm:text-6xl text-4xl max-w-2xl font-bold text-slate-900">
-          {t('description1')} <br></br><div               className=" px-4 py-2 sm:mt-3 mt-8 hover:bg-black/80 w-full"></div>{t('description2')}
+          {tools[selectKey]['description1']} <br></br><div className=" px-4 py-2 sm:mt-3 mt-8 hover:bg-black/80 w-full"></div>{tools[selectKey]['description2']}
         </h1>
-        <p className="text-slate-500 mt-5">{t('slogan')}</p>
+        <p className="text-slate-500 mt-5">{tools[selectKey]['slogan']}</p>
 
 
         <div className="max-w-xl w-full">
@@ -154,7 +159,7 @@ const Home: NextPage = () => {
               className="mb-5 xs:mb-0"
             />
             <p className="text-left font-medium">
-              {t('step1')}{" "}
+              {tools[selectKey]['step1']}{" "}
             </p>
           </div>
 
@@ -164,7 +169,7 @@ const Home: NextPage = () => {
             rows={4}
             className="w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black my-2"
             placeholder={
-              t('placeholder')
+              tools[selectKey]['placeholder']
             }
           />
 
@@ -173,7 +178,7 @@ const Home: NextPage = () => {
               className="bg-black rounded-xl text-white font-medium px-4 py-2 sm:mt-5 mt-8 hover:bg-black/80 w-full"
               onClick={(e) => generateChat(e)}
             >
-              {t('simplifierButton')} &rarr;
+              {tools[selectKey]['simplifierButton']} &rarr;
             </button>
           )}
           {loading && (
