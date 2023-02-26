@@ -4,7 +4,11 @@ import { useRouter } from 'next/router'
 import { useTranslations } from "next-intl";
 import Github from "./GitHub";
 
-export default function Header() {
+interface HeaderProps {
+  title: String;
+}
+
+export default function Header({ title }: HeaderProps) {
   const t = useTranslations('Index')
   const { locale, locales, route } = useRouter()
   const otherLocale = locales?.find((cur) => cur !== locale)
@@ -20,7 +24,7 @@ export default function Header() {
           height={32}
         />
         <h1 className="sm:text-4xl text-2xl font-bold ml-2 tracking-tight">
-          {t('title')}
+          {title}
         </h1>
       </Link>
       <div className="flex gap-2">
